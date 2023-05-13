@@ -7,11 +7,4 @@ ENV DB_USERNAME=root
 ENV DB_PASSWORD=123456
 
 COPY build/libs/*SNAPSHOT.jar /app.jar
-ENTRYPOINT [
-    "java",
-    "-Dspring.datasource.url=jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}",
-    "-Dspring.datasource.username=${DB_USERNAME}",
-    "-Dspring.datasource.password=${DB_PASSWORD}",
-    "-jar",
-    "/app.jar"
-]
+ENTRYPOINT ["java","-Dspring.datasource.url=jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}","-Dspring.datasource.username=${DB_USERNAME}","-Dspring.datasource.password=${DB_PASSWORD}","-jar","/app.jar"]
