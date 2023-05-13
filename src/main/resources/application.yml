@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: property-hive
   datasource:
     url: jdbc:mysql://localhost:3306/property_hive
     username: root
@@ -22,3 +24,7 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
+      packages-to-scan:
+        - com.prprv.property.controller
+        - com.prprv.property.controller.biz
+        - com.prprv.property.controller.sys
