@@ -35,6 +35,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public abstract class AbstractEntity implements Serializable {
+
     /**
      * 主键生成策略，由数据库自动生成。
      */

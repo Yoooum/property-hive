@@ -1,6 +1,7 @@
 package com.prprv.property.entity.value;
 
 /**
+ * 注册信息类型
  * @author Yoooum
  */
 public record Register(
@@ -9,5 +10,4 @@ public record Register(
         String phone,
         String password
 ) {
-
 }
