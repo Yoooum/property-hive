@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Property extends AbstractEntity {
+
     /**
      * 所属小区
      */

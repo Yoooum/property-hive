@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Vehicle extends AbstractEntity {
+
     /**
      * 车牌号
      */
@@ -30,6 +31,7 @@ public class Vehicle extends AbstractEntity {
      * 车辆颜色
      */
     private String color;
+
     /**
      * 备注
      */

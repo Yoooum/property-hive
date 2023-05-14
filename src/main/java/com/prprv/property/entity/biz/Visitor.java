@@ -14,15 +14,18 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Visitor extends AbstractEntity {
+
     /**
      * 访客姓名
      */
     private String name;
+
     /**
      * 访问小区
      */
     @ManyToOne
     private Community community;
+
     /**
      * 访问时间
      */

@@ -16,18 +16,22 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Role extends AbstractEntity {
+
     /**
      * 角色名称
      */
     private String name;
+
     /**
      * 角色标识
      */
     private String code;
+
     /**
      * 角色描述
      */
     private String description;
+
     /**
      * 角色权限
      */
