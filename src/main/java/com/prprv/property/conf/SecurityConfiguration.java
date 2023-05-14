@@ -59,7 +59,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 // 不需要身份认证的请求
                 .requestMatchers(
-                        "/api/v1/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/doc.html",
@@ -70,7 +69,7 @@ public class SecurityConfiguration {
                         "/api/v1/auth/token")
                 .permitAll()
                 // 其他所有请求都需要登录
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 // 异常处理
                 .exceptionHandling()
