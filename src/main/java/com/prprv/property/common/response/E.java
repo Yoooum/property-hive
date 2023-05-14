@@ -17,7 +17,9 @@ public enum E {
     USERNAME_ALREADY_EXISTS(1004, "用户名已存在"),
     INTERNAL_SERVER_ERROR(5000, "内部服务器错误"),
     NOT_FOUND(5001, "未找到"),
-    UPDATE_FAILED(5002, "更新失败，对象不存在");
+    UPDATE_FAILED(5002, "更新失败，对象不存在"),
+    UNAUTHORIZED(401, "未授权"),
+    FORBIDDEN(403, "拒绝访问");
 
     private final int code;
     private final String message;

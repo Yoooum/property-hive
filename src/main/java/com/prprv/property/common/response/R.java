@@ -49,4 +49,14 @@ public class R<T> implements Serializable {
     public static <T> R<T> error(E code) {
         return new R<>(code.getCode(), code.getMessage(), null);
     }
+
+    /**
+     * 创建一个自定义错误消息的错误响应
+     * @param code 错误码枚举
+     * @param message 错误消息描述
+     * @return 错误响应
+     */
+    public static <T> R<T> error(E code, String message) {
+        return new R<>(code.getCode(), message, null);
+    }
 }
