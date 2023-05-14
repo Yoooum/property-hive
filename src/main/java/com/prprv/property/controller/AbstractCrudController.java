@@ -61,11 +61,23 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
         return R.ok(repository.findAll());
     }
 
+    /**
+     * 分页查询
+     *
+     * @param page      页码
+     * @param size      每页大小
+     * @param sort      按某字段排序，如 id
+     * @param direction 排序方向，asc 或者 desc
+     * @return 分页数据
+     */
     @GetMapping("/page")
     public R<Page<T>> findAll(Integer page, Integer size, String sort, String direction) {
-        Pageable pageable = direction.equals("asc") || direction.equals("desc")
-                ? PageRequest.of(page, size, Sort.by(direction, sort))
-                : PageRequest.of(page, size);
+        Pageable pageable;
+        if (sort != null && direction != null && (direction.equals("asc") || direction.equals("desc"))) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
+        } else {
+            pageable = PageRequest.of(page, size);
+        }
         return R.ok(repository.findAll(pageable));
     }
 }
