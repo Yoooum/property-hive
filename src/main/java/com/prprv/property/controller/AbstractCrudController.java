@@ -4,6 +4,7 @@ import com.prprv.property.common.response.E;
 import com.prprv.property.common.response.R;
 import com.prprv.property.entity.AbstractEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -19,6 +20,7 @@ import java.util.Set;
 /**
  * @author Yoooum
  */
+@Slf4j
 public abstract class AbstractCrudController<T extends AbstractEntity, D extends JpaRepository<T, Long>> {
     protected final D repository;
 
@@ -59,6 +61,7 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
         try {
             return R.ok(repository.save(entity));
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return R.error(E.CREATE_FAILED);
         }
     }
