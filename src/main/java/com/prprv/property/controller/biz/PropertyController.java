@@ -16,4 +16,5 @@ public class PropertyController extends AbstractCrudController<Property, Propert
     protected PropertyController(PropertyRepository repository) {
         super(repository);
     }
+
 }

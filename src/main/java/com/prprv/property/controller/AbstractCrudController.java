@@ -7,14 +7,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,6 +24,25 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
 
     protected AbstractCrudController(D repository) {
         this.repository = repository;
+    }
+
+    /**
+     * 属性的模糊查询
+     *
+     * @param target       目标实体，需要设置一个属性
+     * @param propertyPath 需要查找目标实体的属性
+     * @param isFuzzy 是否模糊查询
+     * @return 查找结果
+     */
+    public List<T> getByTarget(T target , String propertyPath, boolean isFuzzy) {
+        if (isFuzzy) {
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withMatcher(propertyPath, ExampleMatcher.GenericPropertyMatcher::contains);
+            Example<T> example = Example.of(target, matcher);
+            return repository.findAll(example);
+        }
+        Example<T> example = Example.of(target);
+        return repository.findAll(example);
     }
 
     @Operation(summary = "根据ID查询实体")

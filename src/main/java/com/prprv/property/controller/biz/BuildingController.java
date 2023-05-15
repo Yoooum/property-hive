@@ -1,12 +1,13 @@
 package com.prprv.property.controller.biz;
 
-import com.prprv.property.common.response.E;
 import com.prprv.property.common.response.R;
 import com.prprv.property.controller.AbstractCrudController;
 import com.prprv.property.entity.biz.Building;
 import com.prprv.property.repo.BuildingRepository;
-import org.springframework.data.domain.Example;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -21,18 +22,12 @@ public class BuildingController extends AbstractCrudController<Building, Buildin
         super(repository);
     }
 
-    /**
-     * 根据楼栋名称查询楼栋信息
-     *
-     * @param name 楼栋名称
-     * @return R 楼栋信息
-     */
-    @GetMapping("/name/{name}")
-    public R<List<Building>> getByName(@PathVariable String name) {
-        Building building = new Building();
-        building.setName(name);
-        Example<Building> example = Example.of(building);
-        List<Building> buildingList = this.repository.findAll(example);
-        return buildingList.isEmpty() ? R.error(E.NOT_FOUND) : R.ok(buildingList);
+    @GetMapping()
+    public R<List<Building>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
+        Building target = new Building();
+        target.setName(name.trim());
+        return R.ok(super.getByTarget(target, "name", fuzzy));
     }
+
+
 }

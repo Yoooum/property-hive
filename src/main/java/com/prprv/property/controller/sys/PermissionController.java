@@ -4,13 +4,12 @@ import com.prprv.property.common.response.R;
 import com.prprv.property.controller.AbstractCrudController;
 import com.prprv.property.entity.sys.Permission;
 import com.prprv.property.repo.sys.PermissionRepository;
-import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @author Yoooum
@@ -23,11 +22,10 @@ public class PermissionController extends AbstractCrudController<Permission, Per
         super(repository);
     }
 
-    @GetMapping("/name/{name}")
-    public R<Optional<Permission>> getByName(@PathVariable String name) {
+    @GetMapping()
+    public R<List<Permission>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Permission permission = new Permission();
-        permission.setName(name);
-        Example<Permission> example = Example.of(permission);
-        return R.ok(this.repository.findOne(example));
+        permission.setName(name.trim());
+        return R.ok(super.getByTarget(permission, "name", fuzzy));
     }
 }

@@ -1,14 +1,12 @@
 package com.prprv.property.controller.biz;
 
-import com.prprv.property.common.response.E;
 import com.prprv.property.common.response.R;
 import com.prprv.property.controller.AbstractCrudController;
 import com.prprv.property.entity.biz.Repair;
 import com.prprv.property.repo.RepairRepository;
-import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,12 +28,10 @@ public class RepairController extends AbstractCrudController<Repair, RepairRepos
      * @param name 报修项目
      * @return R 报修单信息
      */
-     @GetMapping("/name/{name}")
-        public R<List<Repair>> getByName(@PathVariable String name) {
-            Repair repair = new Repair();
-            repair.setName(name);
-            Example<Repair> example = Example.of(repair);
-            List<Repair> repairList = this.repository.findAll(example);
-            return repairList.isEmpty() ? R.error(E.NOT_FOUND) : R.ok(repairList);
-     }
+     @GetMapping()
+    public R<List<Repair>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
+        Repair target = new Repair();
+        target.setName(name.trim());
+        return R.ok(super.getByTarget(target, "name", fuzzy));
+    }
 }

@@ -16,4 +16,5 @@ public class ParkingUseController extends AbstractCrudController<ParkingUse, Par
     protected ParkingUseController(ParkingUseRepository repository) {
         super(repository);
     }
+
 }
