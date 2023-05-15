@@ -5,6 +5,8 @@ import com.prprv.property.common.response.R;
 import com.prprv.property.entity.AbstractEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Yoooum
@@ -42,16 +46,30 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
         }
     }
 
+
     @Operation(summary = "根据ID更新实体")
     @PutMapping("/{id}")
     public R<T> update(@PathVariable Long id, @RequestBody T entity) {
         Optional<T> existEntity = repository.findById(id);
         if (existEntity.isPresent()) {
             T updateEntity = existEntity.get();
-            BeanUtils.copyProperties(entity, updateEntity, "id");
+            BeanUtils.copyProperties(entity, updateEntity, getNullPropertyNames(entity));
             return R.ok(repository.saveAndFlush(updateEntity));
         }
         return R.error(E.UPDATE_FAILED);
+    }
+
+    private String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<>();
+        for (java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
     }
 
     @Operation(summary = "根据ID删除实体")
