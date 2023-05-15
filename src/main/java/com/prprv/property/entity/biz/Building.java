@@ -14,21 +14,26 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Building extends AbstractEntity {
+
     /**
      * 所属小区
      */
     @ManyToOne
     private Community community;
+
     /**
      * 楼栋名称
      */
     private String name;
+
     /**
      * 总户数
      */
     private Integer rooms;
+
     /**
      * 描述
      */
     private String description;
+
 }

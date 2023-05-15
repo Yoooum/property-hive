@@ -14,17 +14,20 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Parking extends AbstractEntity {
+
     /**
      * 所属小区
      */
     @ManyToOne
     private Community community;
+
     /**
      * 车位编号
      */
     private String code;
+
     /**
-     * 状态（0闲置中/1使用中）
+     * 状态（0=闲置中 / 1=使用中）
      */
     private Integer status;
 }

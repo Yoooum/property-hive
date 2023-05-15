@@ -14,15 +14,18 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class ChargeItem extends AbstractEntity {
+
     /**
      * 所属小区
      */
     @ManyToOne
     private Community community;
+
     /**
      * 项目名称
      */
     private String name;
+
     /**
      * 收费编号
      */

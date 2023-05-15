@@ -14,23 +14,28 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class Pet extends AbstractEntity {
+
     /**
      * 所属成员
      */
     @ManyToOne
     private User user;
+
     /**
      * 宠物名称
      */
     private String name;
+
     /**
      * 宠物照片
      */
     private String photo;
+
     /**
      * 宠物颜色
      */
     private String color;
+
     /**
      * 备注
      */
