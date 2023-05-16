@@ -59,4 +59,7 @@ public class R<T> implements Serializable {
     public static <T> R<T> error(E code, String message) {
         return new R<>(code.getCode(), message, null);
     }
+    public static <T> R<T> error(int code, String message, T data) {
+        return new R<>(code, message, data);
+    }
 }
