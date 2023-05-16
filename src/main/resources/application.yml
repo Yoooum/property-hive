@@ -9,6 +9,28 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  data:
+    redis:
+      host: 172.17.0.3
+  rabbitmq:
+    host: 172.17.0.5
+    username: suika
+    password: akyomi@9107dd
+  mail:
+    protocol: smtp
+    host: outlook.office365.com
+    port: 587
+    username: no-reply@prprv.com
+    password: Cay88761@prprv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: outlook.office365.com
 
 logging:
   file:

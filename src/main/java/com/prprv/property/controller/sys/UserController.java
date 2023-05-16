@@ -10,6 +10,7 @@ import com.prprv.property.exception.AppException;
 import com.prprv.property.repo.sys.RoleRepository;
 import com.prprv.property.repo.sys.UserRepository;
 import com.prprv.property.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +38,18 @@ public class UserController extends AbstractCrudController<User, UserRepository>
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody Register register) {
         return ResponseEntity.ok(userService.register(register));
+    }
+
+    /**
+     *  激活用户
+     * @param email 用户邮箱
+     * @param activationCode 激活码
+     * @return ResponseEntity 结果
+     */
+    @Operation(summary = "激活用户", description = "在实际项目中请不要直接调用接口，最好使用发送邮件")
+    @GetMapping("/activate")
+    public ResponseEntity<Boolean> activateUser(@RequestParam(value = "email") String email ,@RequestParam(value = "code") String activationCode) {
+        return ResponseEntity.ok(userService.activateUser( email, activationCode));
     }
 
     @Override

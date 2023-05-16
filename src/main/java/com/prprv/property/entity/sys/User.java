@@ -46,4 +46,11 @@ public class User extends AbstractEntity {
      */
     @ManyToOne
     private Role role;
+
+    /**
+     * 是否激活
+     */
+    @Column(columnDefinition = "boolean default false" ,nullable = false)
+    private Boolean activated;
+
 }
