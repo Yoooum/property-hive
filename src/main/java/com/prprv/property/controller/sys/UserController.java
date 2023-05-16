@@ -9,19 +9,25 @@ import com.prprv.property.entity.value.Register;
 import com.prprv.property.exception.AppException;
 import com.prprv.property.repo.sys.RoleRepository;
 import com.prprv.property.repo.sys.UserRepository;
+import com.prprv.property.service.SmsService;
 import com.prprv.property.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Yoooum
  */
 @RestController
+@Slf4j
 @RequestMapping("/api/v1/user")
 public class UserController extends AbstractCrudController<User, UserRepository> {
 
@@ -31,6 +37,10 @@ public class UserController extends AbstractCrudController<User, UserRepository>
     private UserService userService;
     @Resource
     private RoleRepository roleRepository;
+
+    @Resource
+    private SmsService smsService;
+
     protected UserController(UserRepository repository) {
         super(repository);
     }
@@ -88,4 +98,44 @@ public class UserController extends AbstractCrudController<User, UserRepository>
         }
         return R.error(E.NOT_FOUND, "更新失败，用户id不存在");
     }
+
+    /**
+     * 使用手机验证码注册.
+     * <p>1.传入验证码后对比验证码是否匹配</p>
+     * <p>2.匹配后将手机号码作为用户名和用户电话创建用户,初始密码为123456</p>
+     * @param authcode 验证码
+     * @see SmsService
+     * @see java.util.regex.Pattern
+     * @see java.util.regex.Matcher
+     */
+    @PostMapping("/register/phone")
+    public R<User> registerByPhone(@RequestParam String authcode) {
+//        匹配验证码
+        if (!Objects.equals(authcode, smsService.authcode))
+            return R.error(E.SMSAUTHCODE_ERROR,"验证码错误,请重新输入验证码");
+
+//        正则表达式提取数字
+        String pattern = "[0-9]+";
+//        创建 Pattern 对象:pattern 对象是一个正则表达式的编译表示.
+        Pattern r = Pattern.compile(pattern);
+//        创建 Pattern 对象:Matcher 对象是对输入字符串进行解释和匹配操作的引擎.
+        Matcher m = r.matcher(smsService.cellphone);
+//        查找字符串中是否有匹配正则表达式的字符/字符串
+        if (m.find()) {
+//        电话号码校验，此处判断恒定为真
+            log.info("Found value: " + m.group(0));
+        } else {
+            return R.error(E.INTERNAL_SERVER_ERROR, "电话号码校验失败");
+        }
+//        去掉原数据中的"[]"
+        String cellphone = m.group(0);
+//        创建用户
+        User user = new User();
+        user.setUsername(cellphone);
+        user.setPhone(cellphone);
+        user.setPassword(passwordEncoder.encode("123456"));
+//        保存用户
+        return R.ok(super.repository.saveAndFlush(user));
+    }
+
 }
