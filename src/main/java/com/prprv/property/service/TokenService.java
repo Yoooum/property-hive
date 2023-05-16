@@ -4,7 +4,9 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.prprv.property.common.response.E;
 import com.prprv.property.common.response.R;
 import com.prprv.property.common.token.TokenProvider;
+import com.prprv.property.entity.sys.User;
 import com.prprv.property.entity.value.SignIn;
+import com.prprv.property.repo.sys.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Yoooum
@@ -30,8 +33,14 @@ public class TokenService {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider tokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
     public ResponseEntity<R<Object>> createToken(SignIn signIn) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(signIn.username(), signIn.password());
+        Optional<User> user = userRepository.findByUsername(signIn.username());
+        Boolean activated = user.map(User::getActivated).orElse(false);
+        if (!activated) {
+            return ResponseEntity.status(401).body(R.error(E.UNAUTHORIZED, "账号未激活"));
+        }
         try {
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             String name = authenticate.getName();

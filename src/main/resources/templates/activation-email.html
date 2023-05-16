@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>prprv物业管理系统账户激活邮件</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .link {
+            display: block;
+            margin: 0 auto;
+            width: 200px;
+            height: auto;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            font-weight: 400;
+            color: #fff;
+            text-align: center;
+            vertical-align: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            color: #fff;
+            background-color: #0069d9;
+            border-color: #0062cc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>账户激活邮件</h1>
+    <p th:text="'用户 ' + ${email} + '，您好！ 你的验证码为：'"></p>
+    <p class="code" th:text="${activationCode}"></p>
+    <p>该验证码5分钟内有效，请尽快完成账户激活。</p>
+    <a th:href="'https://property.api.prprv.com//api/v1/user/activate?code='+${activationCode}+'&email='+${email}" class="link">
+        <span class="button">激活账户</span>
+    </a>
+    <p>如果您无法加载上面的激活链接，请复制以下链接到浏览器手动激活账户：</p>
+    <p th:text="'https://property.api.prprv.com//api/v1/user/activate?code='+${activationCode}+'&email='+${email}"></p>
+</div>
+</body>
+</html>
