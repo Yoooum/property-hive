@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 用户表
@@ -13,19 +14,19 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Entity
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class User extends AbstractEntity {
 
     /**
      * 用户名
      */
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String username;
 
     /**
      * 密码
      */
-    @Column(nullable = false)
     private String password;
 
     /**

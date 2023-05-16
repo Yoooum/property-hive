@@ -15,6 +15,8 @@ public enum E {
     EXPIRED_TOKEN(1002, "过期令牌"),
     INVALID_USERNAME_OR_PASSWORD(1003, "无效的用户名或密码"),
     USERNAME_ALREADY_EXISTS(1004, "用户名已存在"),
+    EMAIL_ALREADY_EXISTS(1005, "邮箱已存在"),
+    PHONE_ALREADY_EXISTS(1006, "手机号已存在"),
     INTERNAL_SERVER_ERROR(5000, "内部服务器错误"),
     NOT_FOUND(5001, "未找到"),
     UPDATE_FAILED(5002, "更新失败，对象不存在"),
