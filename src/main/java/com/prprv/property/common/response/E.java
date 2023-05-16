@@ -26,7 +26,8 @@ public enum E {
     UPDATE_FAILED(5002, "更新失败，对象不存在"),
     UNAUTHORIZED(401, "未授权"),
     FORBIDDEN(403, "拒绝访问"),
-    CREATE_FAILED(5003, "创建失败，参数错误");
+    CREATE_FAILED(5003, "创建失败，参数错误"),
+    SMSAUTHCODE_ERROR(5004,"验证码错误");
 
     private final int code;
     private final String message;
