@@ -24,7 +24,15 @@ public class RoleController extends AbstractCrudController<Role, RoleRepository>
     @GetMapping()
     public R<List<Role>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Role target = new Role();
-        target.setName(name.trim());
+        try {
+            target.setId(Long.parseLong(name));
+        } catch (NumberFormatException e) {
+            target.setName(name.trim());
+        }
         return R.ok(super.getByTarget(target, "name", fuzzy));
+    }
+
+    public void getBySome() {
+
     }
 }

@@ -25,7 +25,11 @@ public class ActivityController extends AbstractCrudController<Activity, Activit
     @GetMapping()
     public R<List<Activity>> getByName(String title, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Activity target = new Activity();
-        target.setTitle(title.trim());
+        try {
+            target.setId(Long.parseLong(title));
+        } catch (NumberFormatException e) {
+            target.setTitle(title.trim());
+        }
         return R.ok(super.getByTarget(target, "title", fuzzy));
     }
 }

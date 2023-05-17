@@ -25,7 +25,11 @@ public class ComplaintController extends AbstractCrudController<Complaint, Compl
     @GetMapping()
     public R<List<Complaint>> getByTitle(String title, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Complaint target = new Complaint();
-        target.setTitle(title.trim());
+        try {
+            target.setId(Long.parseLong(title));
+        } catch (NumberFormatException e) {
+            target.setTitle(title.trim());
+        }
         return R.ok(super.getByTarget(target, "title", fuzzy));
     }
 }
