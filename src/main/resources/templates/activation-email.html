@@ -86,11 +86,11 @@
     <p th:text="'用户 ' + ${email} + '，您好！ 你的验证码为：'"></p>
     <p class="code" th:text="${activationCode}"></p>
     <p>该验证码5分钟内有效，请尽快完成账户激活。</p>
-    <a th:href="'https://property.api.prprv.com//api/v1/user/activate?code='+${activationCode}+'&email='+${email}" class="link">
+    <a th:href="'https://property.api.prprv.com/api/v1/user/activate?code='+${activationCode}+'&email='+${email}" class="link">
         <span class="button">激活账户</span>
     </a>
     <p>如果您无法加载上面的激活链接，请复制以下链接到浏览器手动激活账户：</p>
-    <p th:text="'https://property.api.prprv.com//api/v1/user/activate?code='+${activationCode}+'&email='+${email}"></p>
+    <p th:text="'https://property.api.prprv.com/api/v1/user/activate?code='+${activationCode}+'&email='+${email}"></p>
 </div>
 </body>
 </html>
