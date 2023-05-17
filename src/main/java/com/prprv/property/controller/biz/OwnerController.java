@@ -25,7 +25,11 @@ public class OwnerController extends AbstractCrudController<Owner, OwnerReposito
     @GetMapping()
     public R<List<Owner>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Owner target = new Owner();
-        target.setName(name.trim());
+        try {
+            target.setId(Long.parseLong(name));
+        } catch (NumberFormatException e) {
+            target.setName(name.trim());
+        }
         return R.ok(super.getByTarget(target, "name", fuzzy));
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * @author Yoooum
  */
+
 @RestController
 @RequestMapping("/api/v1/visitor")
 public class VisitorController extends AbstractCrudController<Visitor, VisitorRepository> {

@@ -25,7 +25,11 @@ public class CommunityController extends AbstractCrudController<Community, Commu
     @GetMapping()
     public R<List<Community>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Community target = new Community();
-        target.setName(name.trim());
+        try {
+            target.setId(Long.parseLong(name));
+        } catch (NumberFormatException e) {
+            target.setName(name.trim());
+        }
         return R.ok(super.getByTarget(target, "name", fuzzy));
     }
 }

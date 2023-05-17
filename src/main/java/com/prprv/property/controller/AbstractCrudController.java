@@ -24,6 +24,7 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
         this.repository = repository;
     }
 
+
     /**
      * 属性的模糊查询
      *
@@ -35,6 +36,7 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
     public List<T> getByTarget(T target , String propertyPath, boolean isFuzzy) {
         if (isFuzzy) {
             ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withMatcher("id", ExampleMatcher.GenericPropertyMatcher::contains)
                     .withMatcher(propertyPath, ExampleMatcher.GenericPropertyMatcher::contains);
             Example<T> example = Example.of(target, matcher);
             return repository.findAll(example);
@@ -78,16 +80,16 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
 
 
 
-    @Operation(summary = "根据ID删除实体")
-    @DeleteMapping("/{id}")
-    public R<Void> delete(@PathVariable Long id) {
-        Optional<T> existEntity = repository.findById(id);
-        if (existEntity.isPresent()) {
-            repository.delete(existEntity.get());
-            return R.ok();
-        }
-        return R.error(E.NOT_FOUND);
-    }
+//    @Operation(summary = "根据ID删除实体")
+//    @DeleteMapping("/{id}")
+//    public R<Void> delete(@PathVariable Long id) {
+//        Optional<T> existEntity = repository.findById(id);
+//        if (existEntity.isPresent()) {
+//            repository.delete(existEntity.get());
+//            return R.ok();
+//        }
+//        return R.error(E.NOT_FOUND);
+//    }
 
     /**
      * getByPaged

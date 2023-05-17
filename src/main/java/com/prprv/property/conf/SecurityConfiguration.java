@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ import java.util.List;
  * @author Yoooum
  */
 @Slf4j
+@EnableMethodSecurity
 @Configuration
 public class SecurityConfiguration {
     private final TokenAuthenticationFilter tokenFilter;
@@ -73,7 +75,11 @@ public class SecurityConfiguration {
                         "/v3/api-docs/**",
                         "/webjars/**",
                         "/api/v1/auth/authorize",
-                        "/api/v1/auth/token")
+                        "/api/v1/auth/token",
+                        "/api/v1/sms",
+                        "/api/v1/user/register/phone",
+                        "/api/v1/user/register",
+                        "/api/v1/user")
                 .permitAll()
                 // 其他所有请求都需要登录
                 .anyRequest().permitAll()

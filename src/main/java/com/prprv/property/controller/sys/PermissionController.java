@@ -24,8 +24,12 @@ public class PermissionController extends AbstractCrudController<Permission, Per
 
     @GetMapping()
     public R<List<Permission>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
-        Permission permission = new Permission();
-        permission.setName(name.trim());
-        return R.ok(super.getByTarget(permission, "name", fuzzy));
+        Permission target = new Permission();
+        try {
+            target.setId(Long.parseLong(name));
+        } catch (NumberFormatException e) {
+            target.setName(name.trim());
+        }
+        return R.ok(super.getByTarget(target, "name", fuzzy));
     }
 }

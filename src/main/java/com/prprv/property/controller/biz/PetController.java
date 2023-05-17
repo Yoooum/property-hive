@@ -31,7 +31,11 @@ public class PetController extends AbstractCrudController<Pet, PetRepository> {
      @GetMapping()
     public R<List<Pet>> getByName(String name, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Pet target = new Pet();
-        target.setName(name.trim());
+        try {
+            target.setId(Long.parseLong(name));
+        } catch (NumberFormatException e) {
+            target.setName(name.trim());
+        }
         return R.ok(super.getByTarget(target, "name", fuzzy));
     }
 }
