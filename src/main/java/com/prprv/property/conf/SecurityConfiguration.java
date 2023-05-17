@@ -73,7 +73,11 @@ public class SecurityConfiguration {
                         "/v3/api-docs/**",
                         "/webjars/**",
                         "/api/v1/auth/authorize",
-                        "/api/v1/auth/token")
+                        "/api/v1/auth/token",
+                        "/api/v1/sms",
+                        "/api/v1/user/register/phone",
+                        "/api/v1/user/register",
+                        "/api/v1/user")
                 .permitAll()
                 // 其他所有请求都需要登录
                 .anyRequest().permitAll()
