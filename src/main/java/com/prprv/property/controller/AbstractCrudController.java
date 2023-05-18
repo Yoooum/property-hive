@@ -45,6 +45,25 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
         return repository.findAll(example);
     }
 
+    /**
+     * 多属性的可选模糊查询 实际SQL用Or连接
+     * @param target 目标实体
+     * @param propertyPaths 需要查找目标实体的属性数组
+     * @param isFuzzy 是否模糊查询
+     * @return 查找结果
+     */
+    public List<T> getByTarget(T target, String[] propertyPaths, boolean isFuzzy) {
+        ExampleMatcher matcher;
+        matcher = ExampleMatcher.matchingAny();
+        if (isFuzzy) {
+            for (String propertyPath : propertyPaths) {
+                matcher = matcher.withMatcher(propertyPath, ExampleMatcher.GenericPropertyMatcher::contains);
+            }
+        }
+        Example<T> example = Example.of(target, matcher);
+        return repository.findAll(example);
+    }
+
     @Operation(summary = "根据ID查询实体")
     @GetMapping("/{id}")
     public R<T> getById(@PathVariable Long id) {
@@ -113,6 +132,7 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
         Page<T> result = repository.findAll(pageable);
         return R.ok(result);
     }
+
 
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<R<T>> handleException(Exception e) {
