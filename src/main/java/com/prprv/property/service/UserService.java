@@ -6,17 +6,22 @@ import com.prprv.property.entity.value.Register;
 import com.prprv.property.exception.AppException;
 import com.prprv.property.repo.sys.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * @author Yoooum
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,6 +34,7 @@ public class UserService {
         user.setUsername(register.username());
         user.setEmail(register.email());
         user.setPhone(register.phone());
+        user.setActivated(false);
         user.setPassword(passwordEncoder.encode(register.password()));
         try {
             user = userRepository.save(user);
@@ -36,6 +42,7 @@ public class UserService {
             emailService.sendActivationEmail(register.email(), activationCode);
             return user;
         } catch (Exception e) {
+            log.info("注册失败", e);
             return null;
         }
     }
@@ -44,13 +51,14 @@ public class UserService {
     @Transactional
     public boolean activateUser(String email,String activationCode) {
         String code = redisTemplate.opsForValue().get(email + ":code");
-        if (code == null || !code.equals(activationCode)) {
+        if (!Objects.equals(code, activationCode)) {
             throw new AppException(E.CODE_EXPIRED);
         }
-        User user = userRepository.findByEmail(email).orElse(null);
-        if (user != null) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
             Long expire = redisTemplate.getExpire(email + ":code");
             if (expire != null && expire > 0 && expire <= 5 * 60) {
+                User user = optionalUser.get();
                 user.setActivated(true);
                 userRepository.save(user);
                 redisTemplate.delete(email + ":code");

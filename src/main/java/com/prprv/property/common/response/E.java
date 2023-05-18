@@ -21,6 +21,7 @@ public enum E {
     ACTIVATION_FAILED(1008, "激活失败，用户不存在"),
     EMAIL_SEND_FAILED(1009, "邮件发送失败"),
     USER_NOT_ACTIVATED(1010, "用户未激活"),
+    USER_ACTIVATED(1011, "用户已激活"),
     INTERNAL_SERVER_ERROR(5000, "内部服务器错误"),
     NOT_FOUND(5001, "未找到"),
     ID_NOT_FOUND(5001, "不存在的ID"),

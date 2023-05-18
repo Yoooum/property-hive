@@ -1,6 +1,8 @@
 package com.prprv.property.controller.sys;
 
+import com.prprv.property.common.response.E;
 import com.prprv.property.common.response.R;
+import com.prprv.property.exception.AppException;
 import com.prprv.property.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +31,12 @@ public class EmailController {
     @GetMapping("/send")
     public R<Object> sendEmail(@RequestParam(value = "email") String email,
                                @RequestParam(value = "code") String code) {
+        try {
             emailService.sendActivationEmail(email, code);
-            return R.ok();
+        }catch (AppException e) {
+            return R.error(E.EMAIL_SEND_FAILED,e.getMessage());
+        }
+        return R.ok();
     }
 
     /**
