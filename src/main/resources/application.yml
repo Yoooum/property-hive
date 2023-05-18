@@ -13,9 +13,9 @@ spring:
     redis:
       host: 172.17.0.3
   rabbitmq:
-    host: 172.17.0.5
-    username: suika
-    password: akyomi@9107dd
+    host: rabbitmq
+    username: user
+    password: password
   mail:
     protocol: smtp
     host: outlook.office365.com

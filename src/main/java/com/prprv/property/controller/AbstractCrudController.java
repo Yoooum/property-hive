@@ -99,16 +99,16 @@ public abstract class AbstractCrudController<T extends AbstractEntity, D extends
 
 
 
-//    @Operation(summary = "根据ID删除实体")
-//    @DeleteMapping("/{id}")
-//    public R<Void> delete(@PathVariable Long id) {
-//        Optional<T> existEntity = repository.findById(id);
-//        if (existEntity.isPresent()) {
-//            repository.delete(existEntity.get());
-//            return R.ok();
-//        }
-//        return R.error(E.NOT_FOUND);
-//    }
+    @Operation(summary = "根据ID删除实体")
+    @DeleteMapping("/{id}")
+    public R<Void> delete(@PathVariable Long id) {
+        Optional<T> existEntity = repository.findById(id);
+        if (existEntity.isPresent()) {
+            repository.delete(existEntity.get());
+            return R.ok();
+        }
+        return R.error(E.ID_NOT_FOUND);
+    }
 
     /**
      * getByPaged
