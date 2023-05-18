@@ -23,6 +23,7 @@ public enum E {
     USER_NOT_ACTIVATED(1010, "用户未激活"),
     INTERNAL_SERVER_ERROR(5000, "内部服务器错误"),
     NOT_FOUND(5001, "未找到"),
+    ID_NOT_FOUND(5001, "不存在的ID"),
     UPDATE_FAILED(5002, "更新失败，对象不存在"),
     UNAUTHORIZED(401, "未授权"),
     FORBIDDEN(403, "拒绝访问"),
