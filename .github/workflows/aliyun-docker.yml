@@ -12,7 +12,7 @@ jobs:
       - name: Run build with Gradle Wrapper
         run: |
           ls
-          
+          chmox +x gradlew
           sudo ./gradlew build
 
       - name: Build the Docker image
