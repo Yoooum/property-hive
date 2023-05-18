@@ -6,7 +6,6 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -22,14 +21,13 @@ import org.thymeleaf.context.Context;
 @Slf4j
 public class EmailReceiver {
     private final JavaMailSender emailSender;
-    private final RedisTemplate<String, String> redisTemplate;
     private final TemplateEngine templateEngine;
 
     @RabbitListener(queues = "email.queue")
     public void receiveMessage(EmailMessage message){
         log.info("接收到消息：{}", message);
-        // 从Redis中获取激活代码
-        String activationCode = redisTemplate.opsForValue().get(message.getRecipientEmail()+":code");
+        // 从队列中获取激活代码
+        String activationCode = message.getActivationCode();
         // 创建邮件消息
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();

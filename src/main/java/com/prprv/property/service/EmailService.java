@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -26,18 +27,21 @@ public class EmailService {
     private final UserRepository userRepository;
 
     public void sendActivationEmail(String email, String activationCode) {
+        //判断是否存在用户
         if (userRepository.findByEmail(email).isEmpty()) {
             throw new AppException(E.ACTIVATION_FAILED);
         }
         Optional<User> user = userRepository.findByEmail(email);
+        //判断用户是否已经激活
         user.map(u -> {
             if (u.getActivated()) {
                 throw new AppException(E.USER_ACTIVATED);
             }
             return u;
         });
+        //判断激活码是否过期
         String code = redisTemplate.opsForValue().get(email + ":code");
-        if (code != null && !code.equals(activationCode)) {
+        if (!Objects.equals(code, activationCode)) {
             throw new AppException(E.CODE_EXPIRED);
         }
         try {

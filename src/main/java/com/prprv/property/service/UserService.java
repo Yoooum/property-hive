@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * @author Yoooum
  */
@@ -48,13 +51,14 @@ public class UserService {
     @Transactional
     public boolean activateUser(String email,String activationCode) {
         String code = redisTemplate.opsForValue().get(email + ":code");
-        if (code == null || !code.equals(activationCode)) {
+        if (!Objects.equals(code, activationCode)) {
             throw new AppException(E.CODE_EXPIRED);
         }
-        User user = userRepository.findByEmail(email).orElse(null);
-        if (user != null) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
             Long expire = redisTemplate.getExpire(email + ":code");
             if (expire != null && expire > 0 && expire <= 5 * 60) {
+                User user = optionalUser.get();
                 user.setActivated(true);
                 userRepository.save(user);
                 redisTemplate.delete(email + ":code");
