@@ -3,6 +3,7 @@ package com.prprv.property.controller.biz;
 import com.prprv.property.common.response.R;
 import com.prprv.property.controller.AbstractCrudController;
 import com.prprv.property.entity.biz.Vehicle;
+import com.prprv.property.entity.sys.User;
 import com.prprv.property.repo.VehicleRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,11 @@ public class VehicleController extends AbstractCrudController<Vehicle, VehicleRe
     public R<List<Vehicle>> getByLicensePlate(String licensePlate, @RequestParam(defaultValue = "false") Boolean fuzzy) {
         Vehicle target = new Vehicle();
         target.setLicensePlate(licensePlate.trim());
-        return R.ok(super.getByTarget(target, "licensePlate", fuzzy));
+        User user = new User();
+        user.setUsername(licensePlate.trim());
+        target.setUser(user);
+        String[] properties = {"licensePlate", "user.username"};
+        List<Vehicle> vehicleList = super.getByTarget(target,properties,fuzzy);
+        return R.ok(vehicleList);
     }
 }
