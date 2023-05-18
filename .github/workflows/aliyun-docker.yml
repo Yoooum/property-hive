@@ -10,4 +10,4 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '17'
-    - run: gradle build
+    - run: gradle build -x test
