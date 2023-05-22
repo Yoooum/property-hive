@@ -79,7 +79,8 @@ public class SecurityConfiguration {
                         "/api/v1/sms",
                         "/api/v1/user/register/phone",
                         "/api/v1/user/register",
-                        "/api/v1/user")
+                        "/api/v1/user",
+                        "/api/v1/verify/**")
                 .permitAll()
                 // 其他所有请求都需要登录
                 .anyRequest().permitAll()
