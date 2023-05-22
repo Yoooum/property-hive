@@ -133,6 +133,7 @@ public class UserController extends AbstractCrudController<User, UserRepository>
         User user = new User();
         user.setUsername(cellphone);
         user.setPhone(cellphone);
+        user.setActivated(true);
         user.setPassword(passwordEncoder.encode("123456"));
 //        保存用户
         return R.ok(super.repository.saveAndFlush(user));
