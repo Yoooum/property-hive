@@ -1,5 +1,7 @@
 package com.prprv.property.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prprv.property.common.response.E;
 import com.prprv.property.entity.sys.User;
 import com.prprv.property.entity.value.Register;
@@ -12,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, String> redisTemplate;
+    private final RestTemplate restTemplate;
 
     public User register(Register register) {
         checkIfUserExists(register.username(), register.email(), register.phone());
@@ -44,6 +49,28 @@ public class UserService {
         }
     }
 
+    /**
+     * 找回密码
+     * @param phone 手机号
+     * @param code 验证码
+     * @param password 密码
+     *@return Boolean 结果
+     */
+    public User resetPassword(String phone, String code ,String password) throws IOException {
+        String url = "http://localhost:8080/api/v1/verify/phone?code=" + code + "&phone=" + phone;
+        String verifyString = restTemplate.getForObject(url, String.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(verifyString);
+        if (!jsonNode.path("data").path("valid").asBoolean()) {
+            throw new AppException(E.SMSAUTHCODE_ERROR);
+        }
+        return userRepository.findByPhone(phone)
+                .map(user -> {
+                    user.setPassword(passwordEncoder.encode(password));
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new AppException(E.UPDATE_FAILED));
+    }
 
     @Transactional
     public boolean activateUser(String email,String activationCode) {
