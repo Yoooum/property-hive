@@ -53,4 +53,12 @@ public class Community extends AbstractEntity {
      * 状态
      */
     private String status;
+    /**
+     * 户型
+     */
+    private String houseType;
+    /**
+     * 价格
+     */
+    private Double price;
 }
