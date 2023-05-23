@@ -50,7 +50,7 @@ public class UserService {
     }
 
     /**
-     * 找回密码
+     * 重置密码
      * @param phone 手机号
      * @param code 验证码
      * @param password 密码
