@@ -26,7 +26,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String, String> redisTemplate;
-    private final EmailService emailService;
 
     public User register(Register register) {
         checkIfUserExists(register.username(), register.email(), register.phone());
@@ -38,8 +37,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(register.password()));
         try {
             user = userRepository.save(user);
-            String activationCode = emailService.generateActivationCode(register.email());
-            emailService.sendActivationEmail(register.email(), activationCode);
             return user;
         } catch (Exception e) {
             log.info("注册失败", e);
