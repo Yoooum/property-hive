@@ -13,6 +13,7 @@ import java.util.Date;
 
 /**
  * 房产表
+ *
  * @author Yoooum
  */
 @Data
@@ -29,9 +30,9 @@ public class Property extends AbstractEntity {
     private Long id;
     private String name;
 
-    @ManyToOne
-    private Owner owner;
 
+    private String owner;
+    private String unit;
     private String contact;
     private Integer rooms;
     private Integer floors;
