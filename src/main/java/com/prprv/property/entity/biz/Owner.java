@@ -6,6 +6,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * 业主表
  * @author Yoooum
@@ -56,5 +58,9 @@ public class Owner extends AbstractEntity {
      * 备注
      */
     private String remark;
+    /**
+     * 入住时间
+     */
+    private Date checkIn;
 
 }
