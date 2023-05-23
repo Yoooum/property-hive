@@ -109,7 +109,7 @@ public class UserController extends AbstractCrudController<User, UserRepository>
      * @see java.util.regex.Matcher
      */
     @PostMapping("/register/phone")
-    public R<User> registerByPhone(@RequestParam String authcode) {
+    public R<User> registerByPhone(@RequestParam String authcode, @RequestParam String password) {
 //        匹配验证码
         if (!Objects.equals(authcode, smsService.authcode))
             return R.error(E.SMSAUTHCODE_ERROR,"验证码错误,请重新输入验证码");
@@ -134,7 +134,7 @@ public class UserController extends AbstractCrudController<User, UserRepository>
         user.setUsername(cellphone);
         user.setPhone(cellphone);
         user.setActivated(true);
-        user.setPassword(passwordEncoder.encode("123456"));
+        user.setPassword(passwordEncoder.encode(password));
 //        保存用户
         return R.ok(super.repository.saveAndFlush(user));
     }
