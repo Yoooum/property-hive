@@ -6,6 +6,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * 房产表
  * @author Yoooum
@@ -21,4 +23,15 @@ public class Property extends AbstractEntity {
     @ManyToOne
     private Community community;
 
+    private Long id;
+    private String name;
+
+    @ManyToOne
+    private Owner owner;
+
+    private String contact;
+    private Integer rooms;
+    private Integer floors;
+    private String description;
+    private Date checkIn;
 }
