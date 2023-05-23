@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -97,6 +98,23 @@ public class UserController extends AbstractCrudController<User, UserRepository>
             return R.ok(super.repository.saveAndFlush(existingUser.get()));
         }
         return R.error(E.NOT_FOUND, "更新失败，用户id不存在");
+    }
+
+    /**
+     * 重置密码
+     * @param phone 手机号
+     * @param code 验证码
+     * @param password 密码
+     * @return ResponseEntity 结果
+     */
+    @Operation(summary = "重置密码")
+    @PutMapping("/resetPassword")
+    public R<User> resetPassword(@RequestParam(value = "phone") String phone, @RequestParam(value = "code") String code, @RequestParam(value = "password") String password) {
+        try {
+            return R.ok(userService.resetPassword(phone, code, password));
+        } catch (AppException | IOException e) {
+            return R.error(E.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 
     /**
