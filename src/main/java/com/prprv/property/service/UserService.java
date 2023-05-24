@@ -57,11 +57,11 @@ public class UserService {
      *@return Boolean 结果
      */
     public User resetPassword(String phone, String code ,String password) throws IOException {
-        String url = "http://localhost:8080/api/v1/verify/phone?code=" + code + "&phone=" + phone;
+        String url = "http://10.10.0.1:58080/verify/phone?code=" + code + "&phone=" + phone;
         String verifyString = restTemplate.getForObject(url, String.class);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(verifyString);
-        if (!jsonNode.path("data").path("valid").asBoolean()) {
+        if (!jsonNode.path("valid").asBoolean()) {
             throw new AppException(E.SMSAUTHCODE_ERROR);
         }
         return userRepository.findByPhone(phone)
