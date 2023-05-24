@@ -2,6 +2,7 @@ package com.prprv.property.entity.biz;
 
 import com.prprv.property.entity.AbstractEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,12 +27,14 @@ public class Owner extends AbstractEntity {
      * 所属小区
      */
     @ManyToOne
+    @JoinColumn(name = "community_id")
     private Community community;
 
     /**
      * 所属房产
      */
     @ManyToOne
+    @JoinColumn(name = "property_id")
     private Property property;
 
     /**

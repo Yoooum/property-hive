@@ -11,9 +11,9 @@ spring:
     show-sql: true
   data:
     redis:
-      host: 172.17.0.3
+      host: 10.10.0.1
   rabbitmq:
-    host: rabbitmq
+    host: 10.10.0.1
     username: user
     password: password
   mail:
@@ -50,3 +50,7 @@ springdoc:
         - com.prprv.property.controller
         - com.prprv.property.controller.biz
         - com.prprv.property.controller.sys
+    - group: 'parallel'
+      paths-to-match: '/**'
+      packages-to-scan:
+        - com.prprv.property.controller.biz.parallel

@@ -45,7 +45,7 @@ public class UserService {
             return user;
         } catch (Exception e) {
             log.info("注册失败", e);
-            return null;
+            return user;
         }
     }
 

@@ -1,15 +1,11 @@
 package com.prprv.property.entity.biz;
 
 import com.prprv.property.entity.AbstractEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * 房产表
@@ -25,6 +21,7 @@ public class Property extends AbstractEntity {
      * 所属小区
      */
     @ManyToOne
+    @JoinColumn(name = "community_id")
     private Community community;
 
     private Long id;
