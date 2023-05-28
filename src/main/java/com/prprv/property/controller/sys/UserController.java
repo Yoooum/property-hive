@@ -111,8 +111,10 @@ public class UserController extends AbstractCrudController<User, UserRepository>
     @PostMapping("/register/phone")
     public R<User> registerByPhone(@RequestParam String authcode, @RequestParam String password) {
 //        匹配验证码
+        log.info("[短信服务]短信注册收到验证码"+authcode);
+        log.info("[短信服务]短信注册收到注册时密码"+password);
         if (!Objects.equals(authcode, smsService.authcode))
-            return R.error(E.SMSAUTHCODE_ERROR,"验证码错误,请重新输入验证码");
+            return R.error(E.SMSAUTHCODE_ERROR,"验证码错误,请重新申请验证码");
 
 //        正则表达式提取数字
         String pattern = "[0-9]+";
@@ -136,6 +138,7 @@ public class UserController extends AbstractCrudController<User, UserRepository>
         user.setActivated(true);
         user.setPassword(passwordEncoder.encode(password));
 //        保存用户
+        log.info("[短信服务]用户注册成功用户名为:"+cellphone);
         return R.ok(super.repository.saveAndFlush(user));
     }
 
