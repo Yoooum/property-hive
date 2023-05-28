@@ -21,11 +21,12 @@ import java.util.Arrays;
 public class SmsService {
 
 //    验证码生成
-    public String authcode = String.valueOf((int)((Math.random()*9+1)*1000));
+    public String authcode = null;
 //    电话号码预设
     public String cellphone = null;
 
     public void Sms(String[] phone) {
+        authcode = String.valueOf((int)((Math.random()*9+1)*100000));
 
         try {
             Credential cred = new Credential("SecretId", "SecretKey");
@@ -50,6 +51,7 @@ public class SmsService {
             SendSmsResponse resp = client.SendSms(req);
             System.out.println(SendSmsResponse.toJsonString(resp));
         } catch (TencentCloudSDKException e) {
+            log.error("[短信服务]发送短信异常");
             e.printStackTrace();
             R.ok(E.INTERNAL_SERVER_ERROR);
         }
